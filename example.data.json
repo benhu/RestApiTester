@@ -1,0 +1,34 @@
+{
+    "server": "",
+    "operations": [
+            {
+                "method": "get",
+                "path": "/api/show",
+                "description": "Get all show",
+                "parameters":[
+                        {
+                            "key": "api_key",
+                            "method": "get",
+                            "default": "abcde1234567890"
+                        }
+                    ]
+            },
+            {
+                "method": "post",
+                "path": "/api/contact",
+                "description": "Add a contact",
+                "parameters":[
+                        {
+                            "key": "api_key",
+                            "method": "get",
+                            "default": "abcde1234567890"
+                        },
+                        {
+                            "key": "body",
+                            "method": "post",
+                            "default": {"account_id":"1100032","gender": "Madame","firstname":"Patricia","lastname":"Férasse","phone":"0202020202","email":"xxxxxx@xxxxx.xx"}
+                        }
+                    ]
+            }
+        ]
+}
