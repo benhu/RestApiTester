@@ -6,11 +6,11 @@ const Operations = React.createClass({
         };
     },
     componentWillMount() {
-        $.getJSON("data.json", function(result) {
+        $.getJSON("data.json").then((result) => {
             this.setState({
                 apiData: result
             });
-        }.bind(this));
+        });
     },
     render() {
         return (
@@ -26,11 +26,19 @@ const Operations = React.createClass({
 });
 
 const Operation = React.createClass({
+    getInitialState() {
+        return {
+            displayContent: false
+        };
+    },
+    onHeaderClick() {
+        this.setState({displayContent: !this.state.displayContent});
+    },
     render() {
         return(
             <li className={this.props.data.method + " operations"}>
-                <HeaderOperation httpMethod={this.props.data.method} path={this.props.data.path} description={this.props.data.description}/>
-                <ContentOperation data={this.props.data} server={this.props.server}/>
+                <HeaderOperation httpMethod={this.props.data.method} path={this.props.data.path} description={this.props.data.description} onClick={this.onHeaderClick}/>
+                <ContentOperation display={this.state.displayContent} data={this.props.data} server={this.props.server}/>
             </li>
         );
     }
@@ -39,7 +47,7 @@ const Operation = React.createClass({
 const HeaderOperation = React.createClass({
     render() {
         return (
-            <div className="heading">
+            <div className="heading" onClick={this.props.onClick}>
                 <h3>
                     <span className="http_method">{this.props.httpMethod}</span>
                     <span className="path">{this.props.path}</span>
@@ -54,7 +62,8 @@ const ContentOperation = React.createClass({
     getInitialState() {
         return {
             params: [],
-            response: {}
+            response: {},
+            request: {}
         };
     },
     componentWillMount() {
@@ -66,50 +75,51 @@ const ContentOperation = React.createClass({
 
         let params = this.state.params;
 
-        $.each(params,() => {
-            if (this.key == key) {
-                this.value = value;
-                return;
+        for(var i = 0; i < params.length; ++i) {
+            if (params[i].key == key) {
+                params[i].value = value;
+                break;
             }
-        });
+        }
 
         this.setState({params: params});
     },
     onSubmit() {
-        let data = {};
+        let req = {};
 
-        this.state.params.forEach((element) => {
-            data[element.key] = element.value;
-        });
+        const ajaxData = createUrl(this.props.server, this.props.data.path, this.props.method, this.state.params);
 
-        var uri = this.props.server + this.props.data.path;
+        req.url = ajaxData.url;
 
-        uri = uri.replace(/([^:]\/)\/+/g, "$1");
+        this.setState({request: req});
 
         $.ajax({
-            url: uri,
+            url: req.url,
             type: this.props.data.method,
-            data: data,
-            contentType: "application/json; charset=UTF-8"
+            data: ajaxData.data,
+            contentType: "application/json; charset=UTF-8",
+            complete: (xhr) => {
+                this.setState({response: xhr});
+            }
         });
     },
+    onClear() {
+        this.setState({response: {}});
+    },
     render() {
+        const hasResponse = Object.keys(this.state.response).length > 0;
+
         return (
-            <div className="content">
+            <div className={"content" + (this.props.display ? "" : " hidden")}>
                 <Request onChange={this.onParamsChange} params={this.state.params}/>
-                <Sandbox onSubmit={this.onSubmit}/>
-                <Result response={this.state.response}/>
+                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} hasResponse={hasResponse}/>
+                <Result request={this.state.request} response={this.state.response}/>
             </div>
         );
     }
 });
 
 const Request = React.createClass({
-    onParamChange(key, value){
-        if(this.props.onChange){
-            this.props.onChange(key, value);
-        }
-    },
     render() {
         const paramsWidth = {width: 200};
         return (
@@ -125,7 +135,7 @@ const Request = React.createClass({
                     <tbody>
                         {this.props.params.map((param, i) => {
                             if(param){
-                                return (<Parameter key={i} name={param.key} default={param.value} onChange={this.onParamChange}/>);
+                                return (<Parameter key={i} name={param.key} default={param.value} onChange={this.props.onChange}/>);
                             }
                         })}
                     </tbody>
@@ -225,10 +235,24 @@ const Sandbox = React.createClass({
             this.props.onSubmit();
         }
     },
+    clear(e) {
+        e.preventDefault();
+
+        if(this.props.onClear){
+            this.props.onClear();
+        }
+    },
     render() {
+        let partial = null;
+
+        if(this.props.hasResponse){
+            partial = <input type="button" value="Clear response" onClick={this.clear}/>;
+        }
+
         return (
             <div className="sandbox">
                 <input type="button" value="Try it out!" onClick={this.send}/>
+                {partial}
             </div>
         );
     }
@@ -244,17 +268,22 @@ const Result = React.createClass({
             <div className="response">
                 <Area title="Request URL">
                     <div className="request_url">
-                        <pre></pre>
+                        <pre>{this.props.request.url}</pre>
                     </div>
                 </Area>
                 <Area title="Response Code">
                     <div className="response_code">
-                        <pre></pre>
+                        <pre>{this.props.response.status}</pre>
+                    </div>
+                </Area>
+                <Area title="Response Headers">
+                    <div className="response_headers">
+                        <pre className="json">{this.props.response.getAllResponseHeaders()}</pre>
                     </div>
                 </Area>
                 <Area title="Response Body">
                     <div className="response_json">
-                        <pre className="json"></pre>
+                        <pre className="json">{this.props.response.responseText}</pre>
                     </div>
                 </Area>
             </div>;

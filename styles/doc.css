@@ -57,7 +57,6 @@ li.operations {
 .content {
     padding: 10px;
     border-top: 1px solid black;
-    /*display: none;*/
     overflow: hidden;
 }
 .content h4 {
@@ -98,8 +97,8 @@ li.operations {
     font-size: 0.9em;
     display: none;
 }
-.response {
-    /*display: none;*/
+.hidden {
+    display: none;
 }
 .response pre {
     font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
@@ -138,6 +137,9 @@ input[type=button]:active {
     -ms-transform: translateY(3px);
     -o-transform: translateY(3px);
     transform: translateY(3px);
+}
+input[type=button]:not(:first-child) {
+    margin-left: 5px;
 }
 /*
  * DEFAULT
