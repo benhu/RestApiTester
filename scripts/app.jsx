@@ -122,8 +122,12 @@ const ContentOperation = React.createClass({
 const Request = React.createClass({
     render() {
         const paramsWidth = {width: 200};
-        return (
-            <div className="request">
+
+        let partial = null;
+
+        if(this.props.params.length > 0) {
+            partial =
+                <div className="request">
                 <h4>Parameters</h4>
                 <table>
                     <thead>
@@ -140,8 +144,10 @@ const Request = React.createClass({
                         })}
                     </tbody>
                 </table>
-            </div>
-        );
+            </div>;
+        }
+
+        return (partial);
     }
 });
 
