@@ -93,11 +93,14 @@ const ContentOperation = React.createClass({
 
         this.setState({request: req});
 
+        const content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
+
         $.ajax({
             url: req.url,
             type: this.props.data.method,
-            data: ajaxData.data,
-            contentType: "application/json; charset=UTF-8",
+            data: content,
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8',
             complete: (xhr) => {
                 this.setState({response: xhr});
             }
@@ -289,7 +292,7 @@ const Result = React.createClass({
                 </Area>
                 <Area title="Response Body">
                     <div className="response_json">
-                        <pre className="json">{this.props.response.responseText}</pre>
+                        <pre className="json">{JSON.stringify(JSON.parse(this.props.response.responseText), null, 4)}</pre>
                     </div>
                 </Area>
             </div>;
