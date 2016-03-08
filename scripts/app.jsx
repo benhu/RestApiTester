@@ -142,7 +142,7 @@ const Request = React.createClass({
                     <tbody>
                         {this.props.params.map((param, i) => {
                             if(param){
-                                return (<Parameter key={i} name={param.key} default={param.value} onChange={this.props.onChange}/>);
+                                return (<Parameter key={i} name={param.key} default={param.value} onChange={this.props.onChange} required={!param.required || param.required}/>);
                             }
                         })}
                     </tbody>
@@ -186,11 +186,14 @@ const Parameter = React.createClass({
     render(){
         let input;
 
+        const attr = this.props.required ? {required: "required", placeholder:"(required)"} : {};
+
         if(this.props.name === 'body'){
-            input = <AceEditor id={this.state.id} code={this.state.value} onChange={this.onEditorChange}/>;
+            input = <AceEditor id={this.state.id} code={this.state.value} onChange={this.onEditorChange} {...attr}/>;
         }else{
-            input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange}/>;
+            input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} {...attr}/>;
         }
+
         return (
             <tr>
                 <td>
