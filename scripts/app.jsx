@@ -276,6 +276,18 @@ const Result = React.createClass({
         let partial = null;
 
         if(Object.keys(this.props.response).length > 0) {
+
+            let response = '';
+
+            try
+            {
+                response = JSON.stringify(JSON.parse(this.props.response.responseText), null, 4);
+            }
+            catch(e)
+            {
+                response = this.props.response.responseText;
+            }
+
             partial =
             <div className="response">
                 <Area title="Request URL">
@@ -295,7 +307,7 @@ const Result = React.createClass({
                 </Area>
                 <Area title="Response Body">
                     <div className="response_json">
-                        <pre className="json">{JSON.stringify(JSON.parse(this.props.response.responseText), null, 4)}</pre>
+                        <pre className="json">{response}</pre>
                     </div>
                 </Area>
             </div>;
