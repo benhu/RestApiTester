@@ -65,6 +65,8 @@ const createUrl = (url, path, method, params) => {
     let paramsUsed = [];
     let response = {};
 
+    response.headers = {};
+
     completeUri = completeUri.replace(/([^:]\/)\/+/g, "$1");
 
     let match = regex.exec(path);
@@ -82,12 +84,16 @@ const createUrl = (url, path, method, params) => {
 
     if(method != 'GET') {
         for(var i = 0; i < params.length; ++i) {
-            if(params[i].key != 'body') {
-                if(!isInArray(params[i].key, paramsUsed)) {
-                    completeUri = addParameterToUrl(completeUri, params[i].key, params[i].value);
+            if(params[i].type != 'header'){
+                if(params[i].key != 'body') {
+                    if(!isInArray(params[i].key, paramsUsed)) {
+                        completeUri = addParameterToUrl(completeUri, params[i].key, params[i].value);
+                    }
+                } else {
+                    response.data = params[i].value;
                 }
             } else {
-                response.data = params[i].value;
+                response.headers[params[i].key] = params[i].value;
             }
         }
     }
@@ -95,4 +101,18 @@ const createUrl = (url, path, method, params) => {
     response.url = completeUri;
 
     return response;
+};
+
+const toKeyValueString = (obj) => {
+    const keys = Object.keys(obj);
+    let string = '';
+
+    for(var i = 0; i < keys.length; ++i) {
+        if(string && string.length > 0) {
+            string += '\r\n';
+        }
+        string += keys[i] + ': ' + obj[keys[i]];
+    }
+
+    return string;
 };

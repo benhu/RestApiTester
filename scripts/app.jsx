@@ -90,17 +90,19 @@ const ContentOperation = React.createClass({
         const ajaxData = createUrl(this.props.server, this.props.data.path, this.props.method, this.state.params);
 
         req.url = ajaxData.url;
+        req.headers = ajaxData.headers;
 
         this.setState({request: req});
 
-        const content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
+        req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
 
         $.ajax({
             url: req.url,
             type: this.props.data.method,
-            data: content,
+            data: req.content,
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8',
+            headers: req.headers,
             complete: (xhr) => {
                 this.setState({response: xhr});
             }
@@ -142,7 +144,7 @@ const Request = React.createClass({
                     <tbody>
                         {this.props.params.map((param, i) => {
                             if(param){
-                                return (<Parameter key={i} name={param.key} default={param.value} onChange={this.props.onChange} required={!param.required || param.required}/>);
+                                return (<Parameter key={i} name={param.key} label={param.label} default={param.value} onChange={this.props.onChange} required={!param.required || param.required}/>);
                             }
                         })}
                     </tbody>
@@ -194,10 +196,12 @@ const Parameter = React.createClass({
             input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} {...attr}/>;
         }
 
+        const label = this.props.label ? this.props.label : this.props.name;
+
         return (
             <tr>
                 <td>
-                    <label htmlFor={this.state.id}>{this.props.name}</label>
+                    <label htmlFor={this.state.id}>{label}</label>
                 </td>
                 <td>
                     {input}
@@ -295,6 +299,18 @@ const Result = React.createClass({
                         <pre>{this.props.request.url}</pre>
                     </div>
                 </Area>
+                {(() => {
+                    const head = this.props.request.headers;
+                    if(head && Object.keys(head).length !== 0){
+                        return(
+                            <Area title="Request Headers">
+                                <div className="request_headers">
+                                    <pre>{toKeyValueString(head)}</pre>
+                                </div>
+                            </Area>
+                        );
+                    }
+                })()}
                 <Area title="Response Code">
                     <div className="response_code">
                         <pre>{this.props.response.status}</pre>
@@ -302,7 +318,7 @@ const Result = React.createClass({
                 </Area>
                 <Area title="Response Headers">
                     <div className="response_headers">
-                        <pre className="json">{this.props.response.getAllResponseHeaders()}</pre>
+                        <pre>{this.props.response.getAllResponseHeaders()}</pre>
                     </div>
                 </Area>
                 <Area title="Response Body">
