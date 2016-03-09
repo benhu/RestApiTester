@@ -66,6 +66,7 @@ const createUrl = (url, path, method, params) => {
     let response = {};
 
     response.headers = {};
+    response.allowed = true;
 
     completeUri = completeUri.replace(/([^:]\/)\/+/g, "$1");
 
@@ -84,9 +85,15 @@ const createUrl = (url, path, method, params) => {
 
     if(method != 'GET') {
         for(var i = 0; i < params.length; ++i) {
+
+            if((isEmpty(params[i].required) || params[i].required) && isEmpty(params[i].value)) {
+                response.allowed = false;
+                return response;
+            }
+
             if(params[i].type != 'header'){
                 if(params[i].key != 'body') {
-                    if(!isInArray(params[i].key, paramsUsed)) {
+                    if(!isInArray(params[i].key, paramsUsed) && !isEmpty(params[i].value)) {
                         completeUri = addParameterToUrl(completeUri, params[i].key, params[i].value);
                     }
                 } else {
@@ -116,3 +123,8 @@ const toKeyValueString = (obj) => {
 
     return string;
 };
+
+const isEmpty = (value) => {
+    return typeof value === 'undefined' || value === '';
+};
+

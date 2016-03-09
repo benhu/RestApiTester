@@ -1,3 +1,6 @@
+* {
+    outline: none;
+}
 body {
     font-family: 'Droid Sans', sans-serif;
 }
@@ -58,6 +61,7 @@ li.operations {
     padding: 10px;
     border-top: 1px solid black;
     overflow: hidden;
+    overflow: -moz-hidden-unscrollable;
 }
 .content h4 {
     font-size: 1.1em;
@@ -140,6 +144,9 @@ input[type=button]:active {
 }
 input[type=button]:not(:first-child) {
     margin-left: 5px;
+}
+.empty {
+    border-color: red;
 }
 /*
  * DEFAULT

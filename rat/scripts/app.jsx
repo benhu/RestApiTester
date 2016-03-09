@@ -89,24 +89,27 @@ const ContentOperation = React.createClass({
 
         const ajaxData = createUrl(this.props.server, this.props.data.path, this.props.method, this.state.params);
 
-        req.url = ajaxData.url;
-        req.headers = ajaxData.headers;
+        if(ajaxData.allowed)
+        {
+            req.url = ajaxData.url;
+            req.headers = ajaxData.headers;
 
-        this.setState({request: req});
+            this.setState({request: req});
 
-        req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
+            req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
 
-        $.ajax({
-            url: req.url,
-            type: this.props.data.method,
-            data: req.content,
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8',
-            headers: req.headers,
-            complete: (xhr) => {
-                this.setState({response: xhr});
-            }
-        });
+            $.ajax({
+                url: req.url,
+                type: this.props.data.method,
+                data: req.content,
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                headers: req.headers,
+                complete: (xhr) => {
+                    this.setState({response: xhr});
+                }
+            });
+        }
     },
     onClear() {
         this.setState({response: {}});
@@ -144,7 +147,7 @@ const Request = React.createClass({
                     <tbody>
                         {this.props.params.map((param, i) => {
                             if(param){
-                                return (<Parameter key={i} name={param.key} label={param.label} default={param.value} onChange={this.props.onChange} required={!param.required || param.required}/>);
+                                return (<Parameter key={i} name={param.key} label={param.label} default={param.value} onChange={this.props.onChange} required={isEmpty(param.required) || param.required}/>);
                             }
                         })}
                     </tbody>
@@ -159,8 +162,9 @@ const Request = React.createClass({
 const Parameter = React.createClass({
     getInitialState() {
         return {
-            id: uuid.v1(),
-            value: ''
+            id: uuid.v4(),
+            value: '',
+            requiredAttr: {}
         };
     },
     componentWillMount() {
@@ -171,6 +175,12 @@ const Parameter = React.createClass({
         }else{
             this.setState({
                 value: this.props.default
+            });
+        }
+
+        if(this.props.required) {
+            this.setState({
+                requiredAttr: {required: 'required', placeholder:'(required)'}
             });
         }
     },
@@ -188,12 +198,12 @@ const Parameter = React.createClass({
     render(){
         let input;
 
-        const attr = this.props.required ? {required: "required", placeholder:"(required)"} : {};
+        const emptyClass = this.props.required && isEmpty(this.state.value) ? 'empty' : '';
 
         if(this.props.name === 'body'){
-            input = <AceEditor id={this.state.id} code={this.state.value} onChange={this.onEditorChange} {...attr}/>;
+            input = <AceEditor id={this.state.id} code={this.state.value} onChange={this.onEditorChange} className={emptyClass} {...this.state.requiredAttr}/>;
         }else{
-            input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} {...attr}/>;
+            input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} className={emptyClass} {...this.state.requiredAttr}/>;
         }
 
         const label = this.props.label ? this.props.label : this.props.name;
