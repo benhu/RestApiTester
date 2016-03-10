@@ -14,11 +14,12 @@ git config user.name "Travis-CI"
 git config user.email "travis@nodemeatspace.com"
 
 # copy build folder
-cp ../build . -r
+cp ../build/* . -r
+mv example.data.json data.json
 
 # The first and only commit to this new Git repo contains all the
 # files present with the commit message "Deploy to GitHub Pages".
-git add .
+git add -A
 git commit -m "Deploy to GitHub Pages"
 
 # Force push from the current repo's master branch to the remote
