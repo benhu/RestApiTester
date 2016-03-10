@@ -18,6 +18,7 @@
   "homepage": "https://github.com/benhu/RestApiTester",
   "dependencies": {
     "brace": "^0.7.0",
+    "jquery": "^3.0.0-alpha1",
     "node-uuid": "^1.4.7",
     "react": "^0.14.7",
     "react-dom": "^0.14.7"
