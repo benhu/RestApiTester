@@ -15,10 +15,6 @@ var gulp        = require('gulp'),
 
 gulp.task('default', ['watch']);
 
-gulp.task('development', function() {
-    return process.env.NODE_ENV = 'development atom';
-});
-
 gulp.task('copy-html', function() {
   return gulp.src('src/*.html').pipe(gulp.dest('build'));
 });
@@ -31,7 +27,7 @@ gulp.task('copy-image', function() {
   return gulp.src('src/image/**/*').pipe(gulp.dest('build/assets/image'));
 });
 
-gulp.task('browserify-client', ['development'], function() {
+gulp.task('browserify-client', function() {
   return gulp.src('src/javascript/main.js')
     .pipe(browserify({
       debug: true,
