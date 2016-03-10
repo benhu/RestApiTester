@@ -3,9 +3,8 @@ node_js:
   - '0.12'
 before_script:
   - npm install -g gulp
-script:
-  - gulp build
-  - bash ./deploy.sh
+script: gulp build
+after_success: bash ./deploy.sh
 env:
   global:
     - GH_REF: github.com/benhu/RestApiTester.git
