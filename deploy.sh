@@ -11,7 +11,7 @@ git init
 
 # inside this git repo we'll pretend to be a new user
 git config user.name "Travis-CI"
-git config user.email "travis@nodemeatspace.com"
+git config user.email "travis@pakitow.eu"
 
 # copy build folder
 cp ../build/* . -r
