@@ -2,7 +2,7 @@
 set -e # exit with nonzero exit code if anything fails
 
 # clear and re-create the out directory
-rm -rf out || exit 0;
+rm -rf out .git || exit 0;
 mkdir out;
 
 # go to the out directory and create a *new* Git repo
