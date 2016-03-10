@@ -1,6 +1,12 @@
 language: node_js
 node_js:
-  - "0.12"
+  - '0.12'
 before_script:
   - npm install -g gulp
 script: gulp build
+deploy:
+  script: bash ./deploy.sh
+env:
+  global:
+    - GH_REF: github.com/benhu/RestApiTester.git
+    - secure: TygQ6TRV3FKDcxUvUF74Q0Yqj7yD0Yh0ar9ZEQKZqW5qmO4cYXorpOkTkOAwpRYPk7w2Joc8L3ZNT6fmWQrc+ucig1K+GO7dNFM6UvUs2WPIwfwczo0g+ffp7xHk/TZM3E0LpixMNag0pIe3OXea9x3d455fu1Rs/Ls5TXPou8dJJhjnFvnuXYn5q0k7UdqtCoLlkCDTJ4oqK0RzoA10UIRT4/HX8/QstJ4iNlty+M8z4TpF6VCs5u5aV9iorD3oV6fQl3GXzl7S9DM8hfyAXbhhXb3Qm/3zMTocxFT8P23xkBXow48zYm3Hw9IBr6WttcngDUE0U8ldXIQvFLTgibs2c8wVzDuM61GgzW0tIxq9Gq1k7PIHGzF+5lhQWJF6E0gBtSuBIAFaxsksp3YjJp35eSd832dp1gynKLvh0GZ7TuakY5rQvce0ZOuCp2YeaUWbXsM1VL7qKHXpH4hB3lFl8Cjkn7OhTuG82cPGSNU0s+8edGoNKUEl9R9OAMB8BQkZkUFgMbHIDZJ1DAHtWP400elU1SvJGA43KLUk/ofxq83GskoUfl9XG9eL6ofFrzXTXmb+oedZW2bq0SR6jVv/bWb/+RzbxH5Tejx2RHyQd1IQ64DKgOwA9bbj4TyZ7AtERoVZF81NLI4x2f26QBjjnZF90sH30BOgjXtYxPU=
