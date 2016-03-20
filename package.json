@@ -18,7 +18,6 @@
   "homepage": "https://github.com/benhu/RestApiTester",
   "dependencies": {
     "brace": "^0.7.0",
-    "jquery": "^3.0.0-alpha1",
     "node-uuid": "^1.4.7",
     "qwest": "^4.1.1",
     "react": "^0.14.7",
@@ -39,13 +38,5 @@
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "watchify": "^3.7.0"
-  },
-  "browserify-shim": {
-    "jquery": "$"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
   }
 }

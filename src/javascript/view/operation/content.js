@@ -1,6 +1,5 @@
 'use strict';
 const qwest         = require('qwest'),
-      $             = require('jquery'),
       React         = require('react'),
       UrlHelper     = require('../../helper/url.js'),
       Request       = require('./request.js'),
