@@ -1,7 +1,7 @@
 "use strict";
 var React = require('react');
 var Uuid = require('node-uuid');
-var UrlHelper = require('../../helper/rat.js');
+var ObjectHelper = require('../../helper/object.js');
 var Editor = require('./editor.js');
 
 module.exports = React.createClass({
@@ -43,7 +43,7 @@ module.exports = React.createClass({
     render(){
         let input;
 
-        const emptyClass = this.props.required && UrlHelper.isEmpty(this.state.value) ? 'empty' : '';
+        const emptyClass = this.props.required && ObjectHelper.isEmpty(this.state.value) ? 'empty' : '';
 
         if(this.props.name === 'body') {
             input = <Editor id={this.state.id} code={this.state.value} onChange={this.onEditorChange} className={emptyClass} {...this.state.requiredAttr}/>;

@@ -1,6 +1,6 @@
 "use strict";
 var React = require('react');
-var UrlHelper = require('../../helper/rat.js');
+var ObjectHelper = require('../../helper/object.js');
 var Area = require('./area.js');
 
 module.exports = React.createClass({
@@ -8,7 +8,7 @@ module.exports = React.createClass({
 
         let partial = null;
 
-        if(Object.keys(this.props.response).length > 0) {
+        if(Object.keys(this.props.response).length > 0 || Object.keys(Object.getPrototypeOf(this.props.response)).length > 0) {
 
             let response = '';
 
@@ -34,7 +34,7 @@ module.exports = React.createClass({
                         return(
                             <Area title="Request Headers">
                                 <div className="request_headers">
-                                    <pre>{UrlHelper.toKeyValueString(head)}</pre>
+                                    <pre>{ObjectHelper.toKeyValueString(head)}</pre>
                                 </div>
                             </Area>
                         );

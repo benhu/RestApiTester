@@ -1,17 +1,17 @@
 // Gulp Dependencies
-var gulp        = require('gulp'),
-    rename      = require('gulp-rename'),
+var gulp = require('gulp'),
+  rename = require('gulp-rename'),
 
-// Build Dependencies
-    browserify  = require('gulp-browserify'),
-    uglify      = require('gulp-uglify'),
-    jshint      = require('gulp-jshint'),
+  // Build Dependencies
+  browserify = require('gulp-browserify'),
+  uglify = require('gulp-uglify'),
+  jshint = require('gulp-jshint'),
 
-// Style Dependencies
-    minifyCSS   = require('gulp-minify-css'),
+  // Style Dependencies
+  minifyCSS = require('gulp-minify-css'),
 
-// React Dependencies
-    babelify    = require("babelify");
+  // React Dependencies
+  babelify = require("babelify");
 
 gulp.task('default', ['watch']);
 
@@ -35,7 +35,9 @@ gulp.task('browserify-client', function() {
   return gulp.src('src/javascript/main.js')
     .pipe(browserify({
       debug: true,
-      transform: babelify.configure({presets: ['es2015', 'react']})
+      transform: babelify.configure({
+        presets: ['es2015', 'react']
+      })
     }))
     .pipe(rename('bundle.js'))
     .pipe(gulp.dest('build/assets/javascript'));
@@ -54,14 +56,14 @@ gulp.task('uglify', ['browserify-client'], function() {
     .pipe(gulp.dest('build/assets/javascript'));
 });
 
-gulp.task('minify', ['copy-css'],function() {
+gulp.task('minify', ['copy-css'], function() {
   return gulp.src('build/assets/stylesheet/**/*.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('build/assets/stylesheet'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('src/javascript/**/*.js', [/*'jshint',*/ 'browserify-client']);
+  gulp.watch('src/javascript/**/*.js', [ /*'jshint',*/ 'browserify-client']);
   gulp.watch('src/css/**/*.css', ['copy-css']);
   gulp.watch('src/**/*.html', ['copy-html']);
   gulp.watch('src/image/**/*', ['copy-image']);

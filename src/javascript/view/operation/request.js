@@ -1,6 +1,6 @@
 "use strict";
 var React = require('react');
-var UrlHelper = require('../../helper/rat.js');
+var ObjectHelper = require('../../helper/object.js');
 var Parameter = require('./parameter.js');
 
 module.exports = React.createClass({
@@ -23,7 +23,7 @@ module.exports = React.createClass({
                     <tbody>
                         {this.props.params.map((param, i) => {
                             if(param){
-                                return (<Parameter key={i} name={param.key} label={param.label} default={param.value} onChange={this.props.onChange} required={UrlHelper.isEmpty(param.required) || param.required}/>);
+                                return (<Parameter key={i} name={param.key} label={param.label} default={param.value} onChange={this.props.onChange} required={ObjectHelper.isEmpty(param.required) || param.required}/>);
                             }
                         })}
                     </tbody>

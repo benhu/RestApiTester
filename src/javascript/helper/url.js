@@ -1,13 +1,8 @@
 "use strict";
+var objHelper = require('./object'),
+    arrHelper = require('./array');
+
 module.exports = self = {
-    getParam: (key, params) => {
-        for(var i = 0; i < params.length; ++i) {
-            if (params[i].key == key) {
-                return params[i];
-            }
-        }
-        return null;
-    },
     addParameterToUrl: (url, parameterName, parameterValue, atBeginning) => {
         let replaceDuplicates = true;
         let urlhash = null;
@@ -53,9 +48,6 @@ module.exports = self = {
         }
         return urlParts[0] + newQueryString + urlhash;
     },
-    isInArray: (value, array) => {
-        return array.indexOf(value) > -1;
-    },
     createUrl: (url, path, method, params) => {
         const regex = /\{(.*?)\}/g;
         let completeUri = url + path;
@@ -70,7 +62,7 @@ module.exports = self = {
         let match = regex.exec(path);
 
         while(match != null) {
-            const param = self.getParam(match[1], params);
+            const param = arrHelper.getParam(match[1], params);
 
             if(param != null) {
                 paramsUsed.push(param.key);
@@ -83,14 +75,14 @@ module.exports = self = {
         if(method != 'GET') {
             for(var i = 0; i < params.length; ++i) {
 
-                if((self.isEmpty(params[i].required) || params[i].required) && self.isEmpty(params[i].value)) {
+                if((objHelper.isEmpty(params[i].required) || params[i].required) && objHelper.isEmpty(params[i].value)) {
                     response.allowed = false;
                     return response;
                 }
 
                 if(params[i].type != 'header'){
                     if(params[i].key != 'body') {
-                        if(!self.isInArray(params[i].key, paramsUsed) && !self.isEmpty(params[i].value)) {
+                        if(!arrHelper.isInArray(params[i].key, paramsUsed) && !objHelper.isEmpty(params[i].value)) {
                             completeUri = self.addParameterToUrl(completeUri, params[i].key, params[i].value);
                         }
                     } else {
@@ -105,21 +97,5 @@ module.exports = self = {
         response.url = completeUri;
 
         return response;
-    },
-    toKeyValueString: (obj) => {
-        const keys = Object.keys(obj);
-        let string = '';
-
-        for(var i = 0; i < keys.length; ++i) {
-            if(string && string.length > 0) {
-                string += '\r\n';
-            }
-            string += keys[i] + ': ' + obj[keys[i]];
-        }
-
-        return string;
-    },
-    isEmpty: (value) => {
-        return typeof value === 'undefined' || value === '';
     }
 };

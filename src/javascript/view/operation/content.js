@@ -2,7 +2,7 @@
 const qwest         = require('qwest'),
       $             = require('jquery'),
       React         = require('react'),
-      UrlHelper     = require('../../helper/rat.js'),
+      UrlHelper     = require('../../helper/url.js'),
       Request       = require('./request.js'),
       Sandbox       = require('./sandbox.js'),
       Result        = require('./result.js');
@@ -56,31 +56,17 @@ module.exports = React.createClass({
                     headers: req.headers
                 }
             ).then((xhr) => {
-                console.log('Success', xhr)
                 this.setState({response: xhr});
             }).catch((e, xhr) => {
-                console.log('Error', xhr)
                 this.setState({response: xhr});
             });
-
-            /*$.ajax({
-                url: req.url,
-                type: this.props.data.method,
-                data: req.content,
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                headers: req.headers,
-                complete: (xhr) => {
-                    this.setState({response: xhr});
-                }
-            });*/
         }
     },
     onClear() {
         this.setState({response: {}});
     },
     render() {
-        const hasResponse = Object.keys(this.state.response).length > 0;
+        const hasResponse = Object.keys(this.state.response).length > 0 || Object.keys(Object.getPrototypeOf(this.state.response)).length > 0;
 
         return (
             <div className={"content" + (this.props.display ? "" : " hidden")}>
