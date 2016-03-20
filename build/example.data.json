@@ -8,7 +8,14 @@
                 "parameters":[
                         {
                             "key": "api_key",
+                            "label": "API key (get parameter)",
                             "value": "abcde1234567890"
+                        },
+                        {
+                            "key": "X-Test-Token",
+                            "label": "API key (header)",
+                            "value": "abcde1234567890",
+                            "type": "header"
                         }
                     ]
             },
@@ -38,7 +45,8 @@
                         },
                         {
                             "key": "id",
-                            "value": "1234"
+                            "value": "1234",
+                            "required": false
                         },
                         {
                             "key": "body",

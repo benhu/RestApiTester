@@ -1,7 +1,7 @@
 "use strict";
-var $ = require('jquery');
-var React = require('react');
-var Operation = require('./operation.js');
+const qwest         = require('qwest'),
+      React         = require('react'),
+      Operation     = require('./operation.js');
 
 module.exports = React.createClass({
     getInitialState() {
@@ -10,10 +10,8 @@ module.exports = React.createClass({
         };
     },
     componentWillMount() {
-        $.getJSON("data.json").then((result) => {
-            this.setState({
-                apiData: result
-            });
+        qwest.get('data.json').then((xhr, result) => {
+            this.setState({apiData: result});
         });
     },
     render() {

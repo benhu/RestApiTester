@@ -1,10 +1,11 @@
-"use strict";
-var $ = require('jquery');
-var React = require('react');
-var UrlHelper = require('../../helper/rat.js');
-var Request = require('./request.js');
-var Sandbox = require('./sandbox.js');
-var Result = require('./result.js');
+'use strict';
+const qwest         = require('qwest'),
+      $             = require('jquery'),
+      React         = require('react'),
+      UrlHelper     = require('../../helper/rat.js'),
+      Request       = require('./request.js'),
+      Sandbox       = require('./sandbox.js'),
+      Result        = require('./result.js');
 
 module.exports = React.createClass({
     getInitialState() {
@@ -46,7 +47,23 @@ module.exports = React.createClass({
 
             req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
 
-            $.ajax({
+            qwest.map(
+                this.props.data.method,
+                req.url,
+                req.content,
+                {
+                    dataType: 'json',
+                    headers: req.headers
+                }
+            ).then((xhr) => {
+                console.log('Success', xhr)
+                this.setState({response: xhr});
+            }).catch((e, xhr) => {
+                console.log('Error', xhr)
+                this.setState({response: xhr});
+            });
+
+            /*$.ajax({
                 url: req.url,
                 type: this.props.data.method,
                 data: req.content,
@@ -56,7 +73,7 @@ module.exports = React.createClass({
                 complete: (xhr) => {
                     this.setState({response: xhr});
                 }
-            });
+            });*/
         }
     },
     onClear() {
