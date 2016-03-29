@@ -57,6 +57,18 @@ li.operations {
     -ms-border-radius: 2px;
     border-radius: 2px;
 }
+.param_key {
+    color: #666666;
+    margin-left: 5px;
+    font-weight: normal;
+    font-style: italic;
+}
+.param_key:before {
+    content: '(';
+}
+.param_key:after {
+    content: ')';
+}
 .content {
     padding: 10px;
     border-top: 1px solid black;
@@ -113,6 +125,14 @@ li.operations {
     background-color: #fcf6db;
     border: 1px solid #e5e0c6;
 }
+.empty {
+    border-color: red !important;
+}
+input[type=text] {
+    border: solid 1px #A9A9A9;
+    height: 19px;
+    padding-left: 1px !important;
+}
 input[type=button] {
     color: #fff;
     background-color: #979696;
@@ -144,9 +164,6 @@ input[type=button]:active {
 }
 input[type=button]:not(:first-child) {
     margin-left: 5px;
-}
-.empty {
-    border-color: red;
 }
 /*
  * DEFAULT

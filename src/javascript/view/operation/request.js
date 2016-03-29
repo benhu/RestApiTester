@@ -5,7 +5,7 @@ var Parameter = require('./parameter.js');
 
 module.exports = React.createClass({
     render() {
-        const paramsWidth = {width: 200};
+        const paramsWidth = {width: 350};
 
         let partial = null;
 

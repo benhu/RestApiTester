@@ -51,12 +51,19 @@ module.exports = React.createClass({
             input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} className={emptyClass} {...this.state.requiredAttr}/>;
         }
 
-        const label = this.props.label ? this.props.label : this.props.name;
+        let label;
+
+        if(this.props.label) {
+            label = <label htmlFor={this.state.id}>{this.props.label}<span className='param_key'>{this.props.name}</span></label>;
+        } else {
+            label = <label htmlFor={this.state.id}>{this.props.name}</label>;
+        }
+
 
         return (
             <tr>
                 <td>
-                    <label htmlFor={this.state.id}>{label}</label>
+                    {label}
                 </td>
                 <td>
                     {input}
