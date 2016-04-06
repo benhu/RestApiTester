@@ -11,7 +11,8 @@ module.exports = React.createClass({
         return {
             params: [],
             response: {},
-            request: {}
+            request: {},
+            isLoading: false
         };
     },
     componentWillMount() {
@@ -42,7 +43,7 @@ module.exports = React.createClass({
             req.url = ajaxData.url;
             req.headers = ajaxData.headers;
 
-            this.setState({request: req});
+            this.setState({request: req, isLoading: true});
 
             req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
 
@@ -55,9 +56,9 @@ module.exports = React.createClass({
                     headers: req.headers
                 }
             ).then((xhr) => {
-                this.setState({response: xhr});
+                this.setState({response: xhr, isLoading: false});
             }).catch((e, xhr) => {
-                this.setState({response: xhr});
+                this.setState({response: xhr, isLoading: false});
             });
         }
     },
@@ -70,7 +71,7 @@ module.exports = React.createClass({
         return (
             <div className={"content" + (this.props.display ? "" : " hidden")}>
                 <Request onChange={this.onParamsChange} params={this.state.params}/>
-                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} hasResponse={hasResponse}/>
+                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} hasResponse={hasResponse} loading={this.state.isLoading}/>
                 <Result request={this.state.request} response={this.state.response}/>
             </div>
         );

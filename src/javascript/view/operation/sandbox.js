@@ -23,10 +23,13 @@ module.exports = React.createClass({
             partial = <input type="button" value="Clear response" onClick={this.clear}/>;
         }
 
+        const spinnerClass = this.props.loading ? "spinner" : "hidden";
+
         return (
             <div className="sandbox">
                 <input type="button" value="Try it out!" onClick={this.send}/>
                 {partial}
+                <div className={spinnerClass}><div className="circle"></div></div>
             </div>
         );
     }
