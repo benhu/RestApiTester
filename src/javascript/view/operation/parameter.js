@@ -1,8 +1,8 @@
 "use strict";
-var React = require('react');
-var Uuid = require('node-uuid');
-var ObjectHelper = require('../../helper/object.js');
-var Editor = require('./editor.js');
+const React = require('react'),
+      Uuid = require('node-uuid'),
+      ObjectHelper = require('../../helper/object.js'),
+      Editor = require('./editor.js');
 
 module.exports = React.createClass({
     getInitialState() {

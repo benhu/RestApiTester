@@ -1,7 +1,7 @@
 "use strict";
-var React = require('react');
-var ObjectHelper = require('../../helper/object.js');
-var Parameter = require('./parameter.js');
+const React = require('react'),
+      ObjectHelper = require('../../helper/object.js'),
+      Parameter = require('./parameter.js');
 
 module.exports = React.createClass({
     render() {

@@ -1,7 +1,7 @@
 "use strict";
-var React = require('react');
-var HeaderOperation = require('./operation/header.js');
-var ContentOperation = require('./operation/content.js');
+const React = require('react'),
+      HeaderOperation = require('./operation/header.js'),
+      ContentOperation = require('./operation/content.js');
 
 module.exports = React.createClass({
     getInitialState() {

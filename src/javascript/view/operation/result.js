@@ -1,7 +1,8 @@
 "use strict";
-var React = require('react');
-var ObjectHelper = require('../../helper/object.js');
-var Area = require('./area.js');
+const React = require('react'),
+      ObjectHelper = require('../../helper/object.js'),
+      UrlHelper = require('../../helper/url.js'),
+      Area = require('./area.js');
 
 module.exports = React.createClass({
     render() {
@@ -21,11 +22,13 @@ module.exports = React.createClass({
                 response = this.props.response.responseText;
             }
 
+            const url = UrlHelper.relativeToAbsolute(this.props.request.url);
+
             partial =
             <div className="response">
                 <Area title="Request URL">
                     <div className="request_url">
-                        <pre>{this.props.request.url}</pre>
+                        <pre>{url}</pre>
                     </div>
                 </Area>
                 {(() => {

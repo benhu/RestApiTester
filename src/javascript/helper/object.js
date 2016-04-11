@@ -4,7 +4,7 @@ module.exports = self = {
         const keys = Object.keys(obj);
         let string = '';
 
-        for(var i = 0; i < keys.length; ++i) {
+        for(let i = 0; i < keys.length; ++i) {
             if(string && string.length > 0) {
                 string += '\r\n';
             }

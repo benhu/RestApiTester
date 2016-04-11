@@ -1,7 +1,8 @@
 "use strict";
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Ace = require('brace');
+const React = require('react'),
+      ReactDOM = require('react-dom'),
+      Ace = require('brace');
+      
 require('brace/mode/json');
 require('brace/theme/chrome');
 

@@ -1,8 +1,7 @@
 "use strict";
-
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Rat = require('./view/rat.js');
+const React = require('react'),
+	  ReactDOM = require('react-dom'),
+	  Rat = require('./view/rat.js');
 
 ReactDOM.render(
 	<Rat/>,
