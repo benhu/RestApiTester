@@ -19,7 +19,7 @@ module.exports = React.createClass({
             <ul className="operations">
                 {this.state.apiData.operations.map((data, i) => {
                     if(data){
-                        return (<Operation key={i} data={data} server={this.state.apiData.server}/>);
+                        return (<Operation key={i} data={data} server={this.state.apiData.server} canBeLocalhost={this.state.apiData.localhost}/>);
                     }
                 })}
             </ul>

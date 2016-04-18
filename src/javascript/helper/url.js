@@ -48,11 +48,15 @@ module.exports = self = {
         }
         return urlParts[0] + newQueryString + urlhash;
     },
-    createUrl: (url, path, method, params) => {
+    createUrl: (url, localhost, path, method, params) => {
         const regex = /\{(.*?)\}/g;
         let completeUri = url + path;
         let paramsUsed = [];
         let response = {};
+
+        if(localhost && window.location.hostname == "localhost") {
+            completeUri = self.getRootUrl() + path;
+        }
 
         response.headers = {};
         response.allowed = true;
@@ -82,8 +86,10 @@ module.exports = self = {
 
                 if (params[i].type != 'header') {
                     if (params[i].key != 'body') {
-                        if (!arrHelper.isInArray(params[i].key, paramsUsed) && !objHelper.isEmpty(params[i].value)) {
-                            completeUri = self.addParameterToUrl(completeUri, params[i].key, params[i].value);
+                        if (!arrHelper.isInArray(params[i].key, paramsUsed) && (!objHelper.isEmpty(params[i].value) || typeof params[i].default !== "undefined")) {
+                            let paramsValue = objHelper.isEmpty(params[i].value) ? params[i].default : params[i].value;
+                            paramsValue = encodeURIComponent(paramsValue);
+                            completeUri = self.addParameterToUrl(completeUri, params[i].key, paramsValue);
                         }
                     }
                     else {
@@ -125,11 +131,13 @@ module.exports = self = {
 
         url = base_url + url;
 
-        while (/\/\.\.\//.test(url = url.replace(/[^\/]+\/+\.\.\//g, "")));
-
-        url = url.replace(/\.$/, "").replace(/\/\./g, "").replace(/"/g, "%22")
-            .replace(/'/g, "%27").replace(/</g, "%3C").replace(/>/g, "%3E");
+        while (/\/\.\.\//.test(url = url.replace(/[^\/]+\/+\.\.\//g, "")))
+            url = url.replace(/\.$/, "").replace(/\/\./g, "").replace(/"/g, "%22")
+                     .replace(/'/g, "%27").replace(/</g, "%3C").replace(/>/g, "%3E");
 
         return url;
+    },
+    getRootUrl: () => {
+	    return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + '/';
     }
 };

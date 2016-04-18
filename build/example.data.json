@@ -1,5 +1,6 @@
 {
     "server": "",
+    "localhost": true,
     "operations": [
             {
                 "method": "get",
@@ -46,7 +47,8 @@
                         {
                             "key": "id",
                             "value": "1234",
-                            "required": false
+                            "required": false,
+                            "default": "0"
                         },
                         {
                             "key": "body",

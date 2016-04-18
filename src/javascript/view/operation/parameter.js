@@ -47,6 +47,8 @@ module.exports = React.createClass({
 
         if(this.props.name === 'body') {
             input = <Editor id={this.state.id} code={this.state.value} onChange={this.onEditorChange} className={emptyClass} {...this.state.requiredAttr}/>;
+        }else if(this.props.type === 'boolean'){
+            input = <input id={this.state.id} type="checkbox" value={this.state.value} onChange={this.onInputChange} className={emptyClass} {...this.state.requiredAttr}/>;
         }else{
             input = <input id={this.state.id} type="text" value={this.state.value} onChange={this.onInputChange} className={emptyClass} {...this.state.requiredAttr}/>;
         }

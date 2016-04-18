@@ -36,7 +36,7 @@ module.exports = React.createClass({
     onSubmit() {
         let req = {};
 
-        const ajaxData = UrlHelper.createUrl(this.props.server, this.props.data.path, this.props.method, this.state.params);
+        const ajaxData = UrlHelper.createUrl(this.props.server, this.props.canBeLocalhost, this.props.data.path, this.props.method, this.state.params);
 
         if(ajaxData.allowed)
         {
@@ -45,7 +45,7 @@ module.exports = React.createClass({
 
             this.setState({request: req, isLoading: true});
 
-            req.content = this.props.data.method === 'post' ? JSON.stringify(ajaxData.data) : ajaxData.data;
+            req.content = ajaxData.data;
 
             qwest.map(
                 this.props.data.method,
@@ -53,7 +53,8 @@ module.exports = React.createClass({
                 req.content,
                 {
                     dataType: 'json',
-                    headers: req.headers
+                    headers: req.headers,
+                    cache: true
                 }
             ).then((xhr) => {
                 this.setState({response: xhr, isLoading: false});
