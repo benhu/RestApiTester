@@ -129,27 +129,27 @@ li.operations {
     border-color: red !important;
 }
 .spinner {
-    height: 25px;
+    height: 15px;
     float: right;
-    width: 25px;
+    width: 20px;
     position: relative;
 }
 .spinner > .circle {
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    border-bottom-color: #008FFF;
+    border: 3px solid rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.5);
     -webkit-animation: spinner 2s linear infinite;
     -moz-animation: spinner 2s linear infinite;
     animation: spinner 2s linear infinite;
-    width: 25px;
-    height: 25px;
+    width: 13px;
+    height: 13px;
     border-radius: 100%;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    margin-left: -3px;
-    margin-top: -3px;
+    margin-left: 5px;
+    margin-top: -2px;
 }
 @-moz-keyframes spinner {
     100% {
@@ -176,7 +176,8 @@ input[type=text] {
     height: 19px;
     padding-left: 1px !important;
 }
-input[type=button] {
+input[type=button],
+button {
     color: #fff;
     background-color: #979696;
     border: none;
@@ -188,13 +189,16 @@ input[type=button] {
     padding: 5px 10px;
     cursor: pointer;
 }
-input[type=button]:focus {
+input[type=button]:focus,
+button:focus {
     outline: none;
 }
-input[type=button]:hover {
+input[type=button]:hover,
+button:hover {
     background-color: #8B8B8B;
 }
-input[type=button]:active {
+input[type=button]:active,
+button:active {
     background-color: #8B8B8B;
     -webkit-box-shadow: 0 2px #686868;
     -ms-box-shadow: 0 2px #686868;
@@ -205,7 +209,8 @@ input[type=button]:active {
     -o-transform: translateY(3px);
     transform: translateY(3px);
 }
-input[type=button]:not(:first-child) {
+input[type=button]:not(:first-child),
+button:not(:first-child) {
     margin-left: 5px;
 }
 /*

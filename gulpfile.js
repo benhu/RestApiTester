@@ -46,7 +46,7 @@ gulp.task('vendors', function () {
 gulp.task('browserify', function() {
   var stream = browserify({
     debug: true,
-    entries: ['src/javascript/main.js'],
+    entries: ['src/javascript/main.jsx'],
     transform: babelify.configure({
       presets: ['es2015', 'react']
     })
