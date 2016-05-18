@@ -104,6 +104,14 @@ module.exports = self = {
 
         response.url = completeUri;
 
+        if(response.data && typeof response.data === 'string') {
+            try {
+                const jsonData = JSON.parse(response.data);
+                response.data = jsonData;
+            }
+            catch(e) {}
+        }
+
         return response;
     },
     relativeToAbsolute: (url) => {

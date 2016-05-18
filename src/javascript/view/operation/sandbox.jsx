@@ -1,5 +1,6 @@
 "use strict";
-const React = require('react');
+const React = require('react'),
+      Button = require('../button.jsx');
 
 module.exports = React.createClass({
     send(e) {
@@ -9,26 +10,14 @@ module.exports = React.createClass({
             this.props.onSubmit();
         }
     },
-    clear(e) {
-        e.preventDefault();
-
-        if(this.props.onClear){
-            this.props.onClear();
-        }
-    },
     render() {
-        let partial = null;
-
-        if(this.props.hasResponse){
-            partial = <input type="button" value="Clear response" onClick={this.clear}/>;
-        }
-
         const spinnerClass = this.props.loading ? "spinner" : "hidden";
 
         return (
             <div className="sandbox">
-                <button onClick={this.send}>Try it out! <div className={spinnerClass}><div className="circle"></div></div></button>
-                {partial}
+                <Button onClick={this.props.onSubmit}>Try it out! <div className={spinnerClass}><div className="circle"></div></div></Button>
+                <Button onClick={this.props.onStop} hide={!this.props.loading} class="danger" wait="1000">Stop</Button>
+                <Button onClick={this.props.onClear} hide={!this.props.hasResponse} class="warning">Clear response</Button>
             </div>
         );
     }

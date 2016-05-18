@@ -12,7 +12,8 @@ module.exports = React.createClass({
             params: [],
             response: {},
             request: {},
-            isLoading: false
+            isLoading: false,
+            qwestReq: null
         };
     },
     componentWillMount() {
@@ -35,6 +36,7 @@ module.exports = React.createClass({
     },
     onSubmit() {
         let req = {};
+        let qwestReq = null;
 
         const ajaxData = UrlHelper.createUrl(this.props.server, this.props.canBeLocalhost, this.props.data.path, this.props.method, this.state.params);
 
@@ -47,7 +49,7 @@ module.exports = React.createClass({
 
             req.content = ajaxData.data;
 
-            qwest.map(
+            qwestReq = qwest.map(
                 this.props.data.method,
                 req.url,
                 req.content,
@@ -61,10 +63,16 @@ module.exports = React.createClass({
             }).catch((e, xhr) => {
                 this.setState({response: xhr, isLoading: false});
             });
+
+            this.setState({qwestReq: qwestReq});
         }
     },
     onClear() {
         this.setState({response: {}});
+    },
+    onStop() {
+        this.state.qwestReq.abort();
+        this.setState({qwestReq: null, isLoading: false});
     },
     render() {
         const hasResponse = Object.keys(this.state.response).length > 0 || Object.keys(Object.getPrototypeOf(this.state.response)).length > 0;
@@ -72,7 +80,7 @@ module.exports = React.createClass({
         return (
             <div className={"content" + (this.props.display ? "" : " hidden")}>
                 <Request onChange={this.onParamsChange} params={this.state.params}/>
-                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} hasResponse={hasResponse} loading={this.state.isLoading}/>
+                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} onStop={this.onStop} hasResponse={hasResponse} loading={this.state.isLoading}/>
                 <Result request={this.state.request} response={this.state.response}/>
             </div>
         );

@@ -19,7 +19,7 @@
   "dependencies": {
     "brace": "^0.8.0",
     "node-uuid": "^1.4.7",
-    "qwest": "^4.1.1",
+    "qwest": "^4.4.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
   },

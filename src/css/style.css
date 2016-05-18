@@ -98,9 +98,9 @@ li.operations {
     width: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .content table tbody tr td:first-child {
     font-weight: bold;
@@ -188,6 +188,7 @@ button {
     box-shadow: 0 5px #686868;
     padding: 5px 10px;
     cursor: pointer;
+    min-height: 25px;
 }
 input[type=button]:focus,
 button:focus {
@@ -212,6 +213,46 @@ button:active {
 input[type=button]:not(:first-child),
 button:not(:first-child) {
     margin-left: 5px;
+}
+
+input[type=button].warning,
+button.warning {
+    background-color: #F0AD4E;
+    -webkit-box-shadow: 0 5px #AD7B35;
+    -ms-box-shadow: 0 5px #AD7B35;
+    box-shadow: 0 5px #AD7B35;
+}
+
+input[type=button].warning:hover,
+button.warning:hover {
+    background-color: #D69B48;
+}
+input[type=button].warning:active,
+button.warning:active {
+    background-color: #D69B48;
+    -webkit-box-shadow: 0 2px #AD7B35;
+    -ms-box-shadow: 0 2px #AD7B35;
+    box-shadow: 0 2px #AD7B35;
+}
+
+input[type=button].danger,
+button.danger {
+    background-color: #D9534F;
+    -webkit-box-shadow: 0 5px #9C3330;
+    -ms-box-shadow: 0 5px #9C3330;
+    box-shadow: 0 5px #9C3330;
+}
+
+input[type=button].danger:hover,
+button.danger:hover {
+    background-color: #C74642;
+}
+input[type=button].danger:active,
+button.danger:active {
+    background-color: #C74642;
+    -webkit-box-shadow: 0 2px #9C3330;
+    -ms-box-shadow: 0 2px #9C3330;
+    box-shadow: 0 2px #9C3330;
 }
 /*
  * DEFAULT
