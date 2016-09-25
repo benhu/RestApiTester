@@ -1,17 +1,18 @@
 // Gulp Dependencies
 var gulp = require('gulp'),
 
-    // Build Dependencies
-    browserify = require('browserify'),
-    uglify = require('gulp-uglify'),
-    jshint = require('gulp-jshint'),
-    source = require('vinyl-source-stream'),
+  // Build Dependencies
+  browserify = require('browserify'),
+  uglify = require('gulp-uglify'),
+  jshint = require('gulp-jshint'),
+  source = require('vinyl-source-stream'),
+  htmlreplace = require('gulp-html-replace'),
 
-    // Style Dependencies
-    minifyCSS = require('gulp-minify-css'),
+  // Style Dependencies
+  minifyCSS = require('gulp-clean-css'),
 
-    // React Dependencies
-    babelify = require("babelify");
+  // React Dependencies
+  babelify = require("babelify");
 
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
@@ -19,19 +20,23 @@ var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 gulp.task('default', ['watch']);
 
 gulp.task('copy-html', function() {
-  return gulp.src('src/*.html').pipe(gulp.dest('build'));
+  return gulp.src('index.html')
+        .pipe(htmlreplace({
+          js: ['./assets/javascript/vendors.js', './assets/javascript/app.js']
+        }))
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('copy-example', function() {
-  return gulp.src('src/example.*').pipe(gulp.dest('build'));
+  return gulp.src('example.*').pipe(gulp.dest('build'));
 });
 
 gulp.task('copy-css', function() {
-  return gulp.src('src/css/**/*.css').pipe(gulp.dest('build/assets/stylesheet'));
+  return gulp.src('assets/stylesheet/**/*.css').pipe(gulp.dest('build/assets/stylesheet'));
 });
 
 gulp.task('copy-image', function() {
-  return gulp.src('src/image/**/*').pipe(gulp.dest('build/assets/image'));
+  return gulp.src('assets/image/**/*').pipe(gulp.dest('build/assets/image'));
 });
 
 gulp.task('vendors', function () {
@@ -45,8 +50,8 @@ gulp.task('vendors', function () {
 
 gulp.task('browserify', function() {
   var stream = browserify({
-    debug: true,
-    entries: ['src/javascript/main.jsx'],
+    debug: false,
+    entries: ['assets/javascript/main.jsx'],
     transform: babelify.configure({
       presets: ['es2015', 'react']
     })
@@ -60,8 +65,10 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('jshint', function() {
-  return gulp.src('src/javascript/**/*.js')
-    .pipe(babelify.configure({presets: ['es2015', 'react']}))
+  return gulp.src('assets/javascript/**/*.js')
+    .pipe(babelify.configure({
+      presets: ['es2015', 'react']
+    }))
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
@@ -74,16 +81,16 @@ gulp.task('uglify', ['browserify', 'vendors'], function() {
 
 gulp.task('minify', ['copy-css'], function() {
   return gulp.src('build/assets/stylesheet/**/*.css')
-    .pipe(minifyCSS())
+    .pipe(minifyCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest('build/assets/stylesheet'));
 });
 
 gulp.task('watch', function() {
   gulp.watch('package.json', ['vendors']);
-  gulp.watch('src/javascript/**/*.js', [ 'jshint', 'browserify']);
-  gulp.watch('src/css/**/*.css', ['copy-css']);
-  gulp.watch('src/**/*.html', ['copy-html']);
-  gulp.watch('src/image/**/*', ['copy-image']);
+  gulp.watch('assets/javascript/**/*.js', ['jshint', 'browserify']);
+  gulp.watch('assets/stylesheet/**/*.css', ['copy-css']);
+  gulp.watch('**/*.html', ['copy-html']);
+  gulp.watch('assets/image/**/*', ['copy-image']);
 });
 
 gulp.task('build', ['uglify', 'minify', 'copy-html', 'copy-image', 'copy-example']);
