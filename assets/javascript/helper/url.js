@@ -2,7 +2,7 @@
 import ObjectHelper from './object';
 import ArrayHelper from './array';
 
-class UrlHelper {
+export default class UrlHelper {
     addParameterToUrl(url, parameterName, parameterValue, atBeginning) {
         let replaceDuplicates = true;
         let urlhash = null;
@@ -155,5 +155,3 @@ class UrlHelper {
 	    return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host;
     }
 }
-
-export default UrlHelper;

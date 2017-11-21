@@ -1,6 +1,6 @@
 'use strict';
 
-class ArrayHelper {
+export default class ArrayHelper {
     isInArray (value, array) {
         return array.indexOf(value) > -1;
     }
@@ -14,5 +14,3 @@ class ArrayHelper {
         return null;
     }
 }
-
-export default ArrayHelper;

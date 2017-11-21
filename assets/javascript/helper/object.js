@@ -1,6 +1,6 @@
 'use strict';
 
-class ObjectHelper {
+export default class ObjectHelper {
     toKeyValueString (obj) {
         const keys = Object.keys(obj);
         let string = '';
@@ -19,5 +19,3 @@ class ObjectHelper {
         return typeof value === 'undefined' || value === '';
     }
 }
-
-export default ObjectHelper;

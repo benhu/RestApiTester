@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production';
+
 // Gulp Dependencies
 var gulp = require('gulp'),
 
