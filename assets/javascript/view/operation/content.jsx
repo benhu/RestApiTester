@@ -90,13 +90,6 @@ export default class Content extends React.Component {
     render() {
         const hasResponse = Object.keys(this.state.response).length > 0 || Object.keys(Object.getPrototypeOf(this.state.response)).length > 0;
 
-        /*return (
-            <div className={"content" + (this.props.display ? "" : " hidden")}>
-                <Request onChange={this.onParamsChange} params={this.state.params}/>
-                <Sandbox onSubmit={this.onSubmit} onClear={this.onClear} onStop={this.onStop} hasResponse={hasResponse} loading={this.state.isLoading}/>
-                <Result request={this.state.request} response={this.state.response}/>
-            </div>
-        );*/
         return (
             <div className={"content" + (this.props.display ? "" : " hidden")}>
                 <Request onChange={this.onParamsChange} params={this.state.params}/>

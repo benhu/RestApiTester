@@ -262,6 +262,12 @@ button.danger:active {
     background-color: #F1F1F1;
     border-color: #D0D0D0;
 }
+.operations > .operations:not(.active) {
+    -webkit-box-shadow: 0 5px #686868;
+    -ms-box-shadow: 0 5px #686868;
+    box-shadow: 0 5px #686868;
+    cursor: pointer;
+}
 .content {
     border-top-color: #D0D0D0;
 }
@@ -284,6 +290,11 @@ button.danger:active {
 .put.operations {
     background-color: #e7f0f7;
     border-color: #c3d9ec;
+}
+.put.operations:not(.active) {
+    -webkit-box-shadow: 0 5px #016929;
+    -ms-box-shadow: 0 5px #016929;
+    box-shadow: 0 5px #016929;
 }
 .put .content {
     border-top-color: #c3d9ec;
@@ -308,6 +319,11 @@ button.danger:active {
     background-color: #f9f2e9;
     border-color: #f0e0ca;
 }
+.post.operations:not(.active) {
+    -webkit-box-shadow: 0 5px #B6915E;
+    -ms-box-shadow: 0 5px #B6915E;
+    box-shadow: 0 5px #B6915E;
+}
 .post .content {
     border-top-color: #f0e0ca;
 }
@@ -330,6 +346,11 @@ button.danger:active {
 .get.operations {
     background-color: #e7f6ec;
     border-color: #c3e8d1;
+}
+.get.operations:not(.active) {
+    -webkit-box-shadow: 0 5px #48a469;
+    -ms-box-shadow: 0 5px #48a469;
+    box-shadow: 0 5px #48a469;
 }
 .get .content {
     border-top-color: #c3e8d1;
