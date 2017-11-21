@@ -1,0 +1,60 @@
+{
+    "server": "",
+    "localhost": true,
+    "operations": [
+            {
+                "method": "get",
+                "path": "/api/show",
+                "description": "Get all show",
+                "parameters":[
+                        {
+                            "key": "api_key",
+                            "label": "API key (get parameter)",
+                            "value": "abcde1234567890"
+                        },
+                        {
+                            "key": "X-Test-Token",
+                            "label": "API key (header)",
+                            "value": "abcde1234567890",
+                            "type": "header"
+                        }
+                    ]
+            },
+            {
+                "method": "post",
+                "path": "/api/contact",
+                "description": "Add a contact",
+                "parameters":[
+                        {
+                            "key": "api_key",
+                            "value": "abcde1234567890"
+                        },
+                        {
+                            "key": "body",
+                            "value": {"account_id":"1100032","gender": "Madame","firstname":"Patricia","lastname":"Férasse","phone":"0202020202","email":"xxxxxx@xxxxx.xx"}
+                        }
+                    ]
+            },
+            {
+                "method": "put",
+                "path": "/api/visit/{id}",
+                "description": "Add a contact",
+                "parameters":[
+                        {
+                            "key": "api_key",
+                            "value": "abcde1234567890"
+                        },
+                        {
+                            "key": "id",
+                            "value": "1234",
+                            "required": false,
+                            "default": "0"
+                        },
+                        {
+                            "key": "body",
+                            "value": {"account_id":"1100032","gender": "Madame","firstname":"Patricia","lastname":"Férasse","phone":"0202020202","email":"xxxxxx@xxxxx.xx"}
+                        }
+                    ]
+            }
+        ]
+}
