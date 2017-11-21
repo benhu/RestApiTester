@@ -51,9 +51,9 @@ gulp.task('vendors', function () {
 gulp.task('browserify', function() {
   var stream = browserify({
     debug: false,
-    entries: ['assets/javascript/main.jsx'],
+    entries: ['assets/javascript/main.js'],
     transform: babelify.configure({
-      presets: ['es2015', 'react']
+      presets: ['env', 'react']
     })
   });
 
@@ -67,7 +67,7 @@ gulp.task('browserify', function() {
 gulp.task('jshint', function() {
   return gulp.src('assets/javascript/**/*.js')
     .pipe(babelify.configure({
-      presets: ['es2015', 'react']
+      presets: ['env', 'react']
     }))
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
@@ -81,7 +81,7 @@ gulp.task('uglify', ['browserify', 'vendors'], function() {
 
 gulp.task('minify', ['copy-css'], function() {
   return gulp.src('build/assets/stylesheet/**/*.css')
-    .pipe(minifyCSS({compatibility: 'ie8'}))
+    .pipe(minifyCSS({compatibility: 'ie11'}))
     .pipe(gulp.dest('build/assets/stylesheet'));
 });
 
