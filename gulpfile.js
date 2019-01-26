@@ -1,56 +1,49 @@
 process.env.NODE_ENV = 'production';
 
 // Gulp Dependencies
-var gulp = require('gulp'),
+const { src, dest, watch, series } = require('gulp');
 
-  // Build Dependencies
-  browserify = require('browserify'),
-  uglify = require('gulp-uglify'),
-  jshint = require('gulp-jshint'),
-  source = require('vinyl-source-stream'),
-  htmlreplace = require('gulp-html-replace'),
+const browserify = require('browserify');
+const uglify = require('gulp-uglify');
+const jshint = require('gulp-jshint');
+const source = require('vinyl-source-stream');
+const htmlreplace = require('gulp-html-replace');
+const minifyCSS = require('gulp-clean-css');
+const babelify = require("babelify");
 
-  // Style Dependencies
-  minifyCSS = require('gulp-clean-css'),
+const packageJson = require('./package.json');
+const dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
-  // React Dependencies
-  babelify = require("babelify");
-
-var packageJson = require('./package.json');
-var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
-
-gulp.task('default', ['watch']);
-
-gulp.task('copy-html', function() {
-  return gulp.src('index.html')
+function copyHtml() {
+  return src('index.html')
         .pipe(htmlreplace({
           js: ['./assets/javascript/vendors.js', './assets/javascript/app.js']
         }))
-        .pipe(gulp.dest('build'));
-});
+        .pipe(dest('build'));
+}
 
-gulp.task('copy-example', function() {
-  return gulp.src('example.*').pipe(gulp.dest('build'));
-});
+function copyExample() {
+  return src('example.*').pipe(dest('build'));
+}
 
-gulp.task('copy-css', function() {
-  return gulp.src('assets/stylesheet/**/*.css').pipe(gulp.dest('build/assets/stylesheet'));
-});
+function copyCss() {
+  return src('assets/stylesheet/**/*.css').pipe(dest('build/assets/stylesheet'));
+}
 
-gulp.task('copy-image', function() {
-  return gulp.src('assets/image/**/*').pipe(gulp.dest('build/assets/image'));
-});
+function copyImage() {
+  return src('assets/image/**/*').pipe(dest('build/assets/image'));
+}
 
-gulp.task('vendors', function () {
-    return browserify({
+function vendors() {
+  return browserify({
             debug: false,
             require: dependencies
         }).bundle()
           .pipe(source('vendors.js'))
-          .pipe(gulp.dest('build/assets/javascript'));
-});
+          .pipe(dest('build/assets/javascript'));
+}
 
-gulp.task('browserify', function() {
+function browserifyJs() {
   var stream = browserify({
     debug: false,
     entries: ['assets/javascript/main.js'],
@@ -63,36 +56,39 @@ gulp.task('browserify', function() {
 
   return stream.bundle()
     .pipe(source('app.js'))
-    .pipe(gulp.dest('build/assets/javascript'));
-});
+    .pipe(dest('build/assets/javascript'));
+}
 
-gulp.task('jshint', function() {
-  return gulp.src('assets/javascript/**/*.js')
+function jshintReport() {
+  return src('assets/javascript/**/*.js')
     .pipe(babelify.configure({
       presets: ['env', 'react']
     }))
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
-});
+}
 
-gulp.task('uglify', ['browserify', 'vendors'], function() {
-  return gulp.src('build/assets/javascript/*.js')
+function uglifyJs() {
+  return src('build/assets/javascript/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('build/assets/javascript'));
-});
+    .pipe(dest('build/assets/javascript'));
+}
 
-gulp.task('minify', ['copy-css'], function() {
-  return gulp.src('build/assets/stylesheet/**/*.css')
+function minify() {
+  return src('build/assets/stylesheet/**/*.css')
     .pipe(minifyCSS({compatibility: 'ie11'}))
-    .pipe(gulp.dest('build/assets/stylesheet'));
-});
+    .pipe(dest('build/assets/stylesheet'));
+}
 
-gulp.task('watch', function() {
-  gulp.watch('package.json', ['vendors']);
-  gulp.watch('assets/javascript/**/*.js', ['jshint', 'browserify']);
-  gulp.watch('assets/stylesheet/**/*.css', ['copy-css']);
-  gulp.watch('**/*.html', ['copy-html']);
-  gulp.watch('assets/image/**/*', ['copy-image']);
-});
+function watchFiles() {
+  watch('package.json', ['vendors']);
+  watch('assets/javascript/**/*.js', ['jshint', 'browserify']);
+  watch('assets/stylesheet/**/*.css', ['copy-css']);
+  watch('**/*.html', ['copy-html']);
+  watch('assets/image/**/*', ['copy-image']);
+}
 
-gulp.task('build', ['uglify', 'minify', 'copy-html', 'copy-image', 'copy-example']);
+exports.jshint = jshintReport;
+exports.default = watchFiles;
+exports.watch = watchFiles;
+exports.build = series(browserifyJs, vendors, uglifyJs, copyCss, minify, copyHtml, copyImage, copyExample);
