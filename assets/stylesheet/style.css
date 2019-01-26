@@ -268,6 +268,9 @@ button.danger:active {
     box-shadow: 0 5px #686868;
     cursor: pointer;
 }
+.operations > .operations.deprecated {
+    background-image: linear-gradient(45deg, rgba(255,0,0,1) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,0,0,1) 50%, rgba(255,0,0,1) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 100%);
+}
 .content {
     border-top-color: #D0D0D0;
 }
