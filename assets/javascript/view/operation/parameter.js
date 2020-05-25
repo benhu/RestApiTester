@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import Uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import ObjectHelper from '../../helper/object';
 import Editor from './editor';
 
@@ -8,7 +8,7 @@ export default class Parameter extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: Uuid(),
+            id: uuidv4(),
             value: '',
             requiredAttr: {}
         };

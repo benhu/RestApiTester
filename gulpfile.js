@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'production';
 const { src, dest, watch, series } = require('gulp');
 
 const browserify = require('browserify');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const jshint = require('gulp-jshint');
 const source = require('vinyl-source-stream');
 const htmlreplace = require('gulp-html-replace');
@@ -15,77 +15,73 @@ const packageJson = require('./package.json');
 const dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
 function copyHtml() {
-  return src('index.html')
-        .pipe(htmlreplace({
-          js: ['./assets/javascript/vendors.js', './assets/javascript/app.js']
-        }))
-        .pipe(dest('build'));
+   return src('index.html')
+   .pipe(htmlreplace({
+      js: ['./assets/javascript/vendors.js', './assets/javascript/app.js']
+   }))
+   .pipe(dest('build'));
 }
 
 function copyExample() {
-  return src('example.*').pipe(dest('build'));
+   return src('example.*').pipe(dest('build'));
 }
 
 function copyCss() {
-  return src('assets/stylesheet/**/*.css').pipe(dest('build/assets/stylesheet'));
+   return src('assets/stylesheet/**/*.css').pipe(dest('build/assets/stylesheet'));
 }
 
 function copyImage() {
-  return src('assets/image/**/*').pipe(dest('build/assets/image'));
+   return src('assets/image/**/*').pipe(dest('build/assets/image'));
 }
 
 function vendors() {
-  return browserify({
-            debug: false,
-            require: dependencies
-        }).bundle()
-          .pipe(source('vendors.js'))
-          .pipe(dest('build/assets/javascript'));
+   return browserify({
+      debug: false,
+      require: dependencies
+   }).bundle()
+   .pipe(source('vendors.js'))
+   .pipe(dest('build/assets/javascript'));
 }
 
 function browserifyJs() {
-  var stream = browserify({
-    debug: false,
-    entries: ['assets/javascript/main.js'],
-    transform: babelify.configure({
-      presets: ['env', 'react']
-    })
-  });
-
-  stream.external(dependencies);
-
-  return stream.bundle()
-    .pipe(source('app.js'))
-    .pipe(dest('build/assets/javascript'));
+   return browserify({
+      debug: false,
+      entries: ['assets/javascript/main.js'],
+   })
+   .transform(babelify, {presets: ['@babel/preset-env', '@babel/preset-react']})
+   .external(dependencies)
+   .bundle()
+   .pipe(source('app.js'))
+   .pipe(dest('build/assets/javascript'));
 }
 
 function jshintReport() {
-  return src('assets/javascript/**/*.js')
-    .pipe(babelify.configure({
+   return src('assets/javascript/**/*.js')
+   .pipe(babelify.configure({
       presets: ['env', 'react']
-    }))
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+   }))
+   .pipe(jshint())
+   .pipe(jshint.reporter('jshint-stylish'));
 }
 
 function uglifyJs() {
-  return src('build/assets/javascript/*.js')
-    .pipe(uglify())
-    .pipe(dest('build/assets/javascript'));
+   return src('build/assets/javascript/*.js')
+   .pipe(uglify())
+   .pipe(dest('build/assets/javascript'));
 }
 
 function minify() {
-  return src('build/assets/stylesheet/**/*.css')
-    .pipe(minifyCSS({compatibility: 'ie11'}))
-    .pipe(dest('build/assets/stylesheet'));
+   return src('build/assets/stylesheet/**/*.css')
+   .pipe(minifyCSS({compatibility: 'ie11'}))
+   .pipe(dest('build/assets/stylesheet'));
 }
 
 function watchFiles() {
-  watch('package.json', ['vendors']);
-  watch('assets/javascript/**/*.js', ['jshint', 'browserify']);
-  watch('assets/stylesheet/**/*.css', ['copy-css']);
-  watch('**/*.html', ['copy-html']);
-  watch('assets/image/**/*', ['copy-image']);
+   watch('package.json', ['vendors']);
+   watch('assets/javascript/**/*.js', ['jshint', 'browserify']);
+   watch('assets/stylesheet/**/*.css', ['copy-css']);
+   watch('**/*.html', ['copy-html']);
+   watch('assets/image/**/*', ['copy-image']);
 }
 
 exports.jshint = jshintReport;
