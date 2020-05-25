@@ -22,24 +22,24 @@
     "qwest": "^4.5.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "uuid": "^3.4.0"
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "babelify": "^9.0.0",
+    "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "gulp": "^4.0.2",
-    "gulp-clean-css": "^3.10.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-html-replace": "^1.6.2",
     "gulp-jshint": "^2.1.0",
     "gulp-uglify": "^3.0.2",
     "jshint": "^2.11.1",
     "jshint-stylish": "^2.2.1",
-    "steal": "^1.12.6",
-    "steal-tools": "^1.11.10",
+    "steal": "^2.2.4",
+    "steal-tools": "^2.2.6",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.1"
   }
